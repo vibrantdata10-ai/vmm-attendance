@@ -19,5 +19,11 @@ const CONFIG = {
 
   // Users are now stored in Supabase 'app_users' table
   // This is just the initial admin account - DO NOT REMOVE
-  ADMIN: { id: 'admin001', name: 'Admin', password: 'Vibrant@Admin123', role: 'admin', client: 'ALL' }
+    USERS: [
+  { id: 'admin001', name: 'shanawaz', password: 'vibrant@6305', role: 'admin' },
+  { id: 'boss001',  name: 'mr.Boss',  password: 'Vibrant!123', role: 'boss'  },
+  { id: 'hr001',    name: 'mr.Yaser',    password: 'Vibrant!123',   role: 'hr'    },
+  { id: 'manager', name: 'mr.shamshuddin',password:'Vibrant!123', role: 'manager'}
+
+]
 };
