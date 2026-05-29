@@ -1,0 +1,23 @@
+// =====================================================
+// VIBRANT MARKETING MANAGEMENT - CONFIGURATION
+// Replace with your actual Supabase credentials
+// =====================================================
+
+const CONFIG = {
+  SUPABASE_URL: 'https://ydjafowsvrcphyuvwxwt.supabase.co',
+  SUPABASE_ANON_KEY: 'sb_publishable_UAOPVksoAr2BW765CXVNPA_vxjTYr74',
+  COMPANY_NAME: 'Vibrant Marketing Management',
+
+  // CLIENTS / COMPANIES
+  CLIENTS: ['DU', 'Etisalat'],
+
+  // ROLES:
+  // admin  = full access + user management
+  // boss   = view only (dashboard + export) for assigned client
+  // hr     = dashboard + upload + export for assigned client
+  // manager= agents + attendance + records for assigned client
+
+  // Users are now stored in Supabase 'app_users' table
+  // This is just the initial admin account - DO NOT REMOVE
+  ADMIN: { id: 'admin001', name: 'Admin', password: 'Vibrant@Admin123', role: 'admin', client: 'ALL' }
+};
