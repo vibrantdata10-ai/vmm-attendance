@@ -15,11 +15,9 @@
     <div class="login-logo">
       <div class="logo-icon">📊</div>
       <h1>Vibrant Marketing<br/>Management</h1>
-      <p>Attendance Management System</p>
+      <p>Attendance Management System v2.0</p>
     </div>
-
     <div class="error-msg" id="loginError"></div>
-
     <div class="form-group">
       <label>User ID</label>
       <input type="text" id="loginId" placeholder="Enter your User ID" autocomplete="off" />
@@ -28,14 +26,8 @@
       <label>Password</label>
       <input type="password" id="loginPassword" placeholder="Enter your Password" />
     </div>
-    <button class="btn btn-primary" id="loginBtn">
-      <span>Sign In</span>
-      <span>→</span>
-    </button>
-
-    <p style="text-align:center;font-size:12px;color:var(--text-muted);margin-top:20px;">
-      Authorized personnel only · Vibrant Marketing Management Dubai
-    </p>
+    <button class="btn btn-primary" id="loginBtn"><span>Sign In</span><span>→</span></button>
+    <p style="text-align:center;font-size:12px;color:var(--text-muted);margin-top:20px;">Authorized personnel only · Vibrant Marketing Management Dubai</p>
   </div>
 </div>
 
@@ -47,203 +39,135 @@
     <div class="sidebar-brand">
       <div class="brand-icon">📊</div>
       <h2>Vibrant Marketing<br/>Management</h2>
-      <p>Attendance System</p>
+      <p>Attendance System v2.0</p>
     </div>
-
     <nav class="sidebar-nav">
       <div class="nav-section-label">Main</div>
       <div class="nav-item active" data-page="dashboard" onclick="navigateTo('dashboard')">
         <span class="nav-icon">🏠</span> Dashboard
       </div>
-      <div class="nav-item" data-page="agents" onclick="navigateTo('agents')">
+      <div class="nav-item nav-no-boss" data-page="agents" onclick="navigateTo('agents')">
         <span class="nav-icon">👥</span> Agents
       </div>
-
       <div class="nav-section-label" style="margin-top:12px;">Attendance</div>
-      <div class="nav-item" data-page="attendance" onclick="navigateTo('attendance')">
+      <div class="nav-item nav-no-boss" data-page="attendance" onclick="navigateTo('attendance')">
         <span class="nav-icon">📋</span> Upload Attendance
       </div>
       <div class="nav-item" data-page="records" onclick="navigateTo('records')">
         <span class="nav-icon">🗂️</span> View Records
       </div>
-
       <div class="nav-section-label" style="margin-top:12px;">Reports</div>
       <div class="nav-item" data-page="export" onclick="navigateTo('export')">
         <span class="nav-icon">📥</span> Export Reports
       </div>
+      <div class="nav-section-label nav-admin-only" style="margin-top:12px;">Admin</div>
+      <div class="nav-item nav-admin-only" data-page="users" onclick="navigateTo('users')">
+        <span class="nav-icon">👤</span> User Management
+      </div>
     </nav>
-
     <div class="sidebar-footer">
       <div class="user-badge">
         <div class="avatar" id="sidebarUserAvatar">A</div>
         <div class="user-info">
           <div class="name" id="sidebarUserName">Admin</div>
           <div class="role" id="sidebarUserRole">ADMIN</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:1px;" id="sidebarUserClient"></div>
         </div>
       </div>
-      <button class="btn btn-outline btn-sm" style="width:100%;justify-content:center;" onclick="logout()">
-        🚪 Logout
-      </button>
+      <button class="btn btn-outline btn-sm" style="width:100%;justify-content:center;margin-top:6px;" onclick="logout()">🚪 Logout</button>
     </div>
   </aside>
 
-  <!-- MAIN -->
+  <!-- MAIN CONTENT -->
   <div class="main-content">
     <header class="top-header">
       <h1 id="pageTitle">📊 Dashboard</h1>
       <div class="header-right">
+        <!-- Client tabs for ALL users -->
+        <div class="client-tab-bar" id="clientTabBar">
+          <button class="client-tab active" data-client="DU" onclick="setActiveClient('DU')">🏢 DU</button>
+          <button class="client-tab" data-client="Etisalat" onclick="setActiveClient('Etisalat')">🏢 Etisalat</button>
+        </div>
         <div class="date-badge" id="currentDate"></div>
-        <button class="btn btn-accent btn-sm" onclick="downloadTemplate()">📄 Download Template</button>
+        <button class="btn btn-accent btn-sm" onclick="downloadTemplate()">📄 Template</button>
       </div>
     </header>
 
     <div class="content-area">
 
-      <!-- ======= DASHBOARD PAGE ======= -->
+      <!-- ======= DASHBOARD ======= -->
       <div class="page active" id="page-dashboard">
-        <!-- Stats -->
         <div class="stats-grid">
-          <div class="stat-card blue">
-            <div class="card-accent"></div>
-            <div class="stat-icon">👥</div>
-            <div class="stat-value" id="statTotal">0</div>
-            <div class="stat-label">Total Active Agents</div>
-          </div>
-          <div class="stat-card green">
-            <div class="card-accent"></div>
-            <div class="stat-icon">✅</div>
-            <div class="stat-value" id="statPresent">0</div>
-            <div class="stat-label">Present Today</div>
-          </div>
-          <div class="stat-card red">
-            <div class="card-accent"></div>
-            <div class="stat-icon">❌</div>
-            <div class="stat-value" id="statAbsent">0</div>
-            <div class="stat-label">Absent Today</div>
-          </div>
-          <div class="stat-card gold">
-            <div class="card-accent"></div>
-            <div class="stat-icon">📋</div>
-            <div class="stat-value" id="statUpload">—</div>
-            <div class="stat-label">Today Uploaded</div>
-          </div>
+          <div class="stat-card blue"><div class="card-accent"></div><div class="stat-icon">👥</div><div class="stat-value" id="statTotal">0</div><div class="stat-label">Total Active Agents</div></div>
+          <div class="stat-card green"><div class="card-accent"></div><div class="stat-icon">✅</div><div class="stat-value" id="statPresent">0</div><div class="stat-label">Present Today</div></div>
+          <div class="stat-card red"><div class="card-accent"></div><div class="stat-icon">❌</div><div class="stat-value" id="statAbsent">0</div><div class="stat-label">Absent Today</div></div>
+          <div class="stat-card gold"><div class="card-accent"></div><div class="stat-icon">🏢</div><div class="stat-value" id="statClient" style="font-size:18px;">—</div><div class="stat-label">Active Client View</div></div>
         </div>
-
-        <!-- Team Breakdown -->
         <div class="section-card">
-          <div class="section-header">
-            <h3>🏢 Team Breakdown — Today</h3>
-            <button class="btn btn-outline btn-sm" onclick="loadDashboard()">🔄 Refresh</button>
-          </div>
-          <div class="section-body">
-            <div class="team-grid" id="teamGrid">
-              <p style="color:var(--text-muted);font-size:13px;">Loading...</p>
-            </div>
-          </div>
+          <div class="section-header"><h3>🏢 Team Breakdown — Today</h3><button class="btn btn-outline btn-sm" onclick="loadDashboard()">🔄 Refresh</button></div>
+          <div class="section-body"><div class="team-grid" id="teamGrid"><p style="color:var(--text-muted);font-size:13px;">Loading...</p></div></div>
         </div>
-
-        <!-- Recent Attendance -->
         <div class="section-card">
-          <div class="section-header">
-            <h3>📋 Today's Attendance Preview</h3>
-          </div>
+          <div class="section-header"><h3>📋 Today's Attendance Preview</h3></div>
           <div class="section-body" style="padding:0;">
             <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>CRM ID</th><th>Name</th><th>Team</th><th>Date</th><th>Status</th>
-                  </tr>
-                </thead>
-                <tbody id="recentAttBody">
-                  <tr><td colspan="5"><div class="empty-state"><div class="empty-icon">📋</div><p>Loading...</p></div></td></tr>
-                </tbody>
-              </table>
+              <table><thead><tr><th>CRM ID</th><th>Name</th><th>Team</th><th>Date</th><th>Status</th></tr></thead>
+              <tbody id="recentAttBody"><tr><td colspan="5"><div class="empty-state"><div class="empty-icon">📋</div><p>Loading...</p></div></td></tr></tbody></table>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ======= AGENTS PAGE ======= -->
+      <!-- ======= AGENTS ======= -->
       <div class="page" id="page-agents">
         <div class="section-card">
-          <div class="section-header">
-            <h3>👥 Agent Management</h3>
-            <button class="btn btn-accent btn-sm" onclick="openAddAgentModal()">➕ Add Agent</button>
-          </div>
+          <div class="section-header"><h3>👥 Agent Management</h3><button class="btn btn-accent btn-sm" onclick="openAddAgentModal()">➕ Add Agent</button></div>
           <div class="section-body">
             <div class="filter-bar">
               <input type="text" id="agentSearch" class="search-input" placeholder="Search by name or CRM ID..." oninput="filterAgents()" />
-              <select class="form-group" style="margin:0;padding:9px 14px;border:2px solid var(--border);border-radius:10px;font-family:inherit;font-size:13px;outline:none;background:var(--surface2);" id="agentStatusFilter" onchange="filterAgents()">
-                <option value="">All Status</option>
-                <option value="active">Active</option>
-                <option value="terminated">Terminated</option>
-              </select>
-              <select class="form-group" style="margin:0;padding:9px 14px;border:2px solid var(--border);border-radius:10px;font-family:inherit;font-size:13px;outline:none;background:var(--surface2);" id="agentTeamFilter" onchange="filterAgents()">
-                <option value="">All Teams</option>
+              <select style="padding:9px 14px;border:2px solid var(--border);border-radius:10px;font-family:inherit;font-size:13px;outline:none;background:var(--surface2);" id="agentStatusFilter" onchange="filterAgents()">
+                <option value="">All Status</option><option value="active">Active</option><option value="terminated">Terminated</option>
               </select>
             </div>
             <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>CRM ID</th><th>Dialer ID</th><th>Name</th><th>Date of Joining</th><th>Team</th><th>Status</th><th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="agentsTableBody">
-                  <tr><td colspan="7"><div class="empty-state"><div class="empty-icon">👥</div><p>Loading agents...</p></div></td></tr>
-                </tbody>
-              </table>
+              <table><thead><tr><th>CRM ID</th><th>Dialer ID</th><th>Name</th><th>Date of Joining</th><th>Team</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="agentsTableBody"><tr><td colspan="7"><div class="empty-state"><div class="empty-icon">👥</div><p>Loading...</p></div></td></tr></tbody></table>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ======= ATTENDANCE UPLOAD PAGE ======= -->
+      <!-- ======= ATTENDANCE UPLOAD ======= -->
       <div class="page" id="page-attendance">
-        <div class="section-card" style="margin-bottom:20px;">
-          <div class="section-header">
-            <h3>📋 Upload Daily Attendance</h3>
-          </div>
+        <div class="section-card">
+          <div class="section-header"><h3>📋 Upload Daily Attendance</h3></div>
           <div class="section-body">
-            <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#1e40af;">
-              <strong>📌 Instructions:</strong> Download the template using the button above. Fill in the <strong>ATTENDANCE</strong> column with <strong>PRESENT</strong> or <strong>ABSENT</strong> (or P/A). Then upload here — the system will auto-match by CRM ID and save today's attendance.
+            <!-- Client selector for upload -->
+            <div style="margin-bottom:18px;">
+              <div style="font-size:13px;font-weight:600;color:var(--primary);margin-bottom:8px;">Select Client for this Upload:</div>
+              <div style="display:flex;gap:8px;" id="uploadClientTabs">
+                <button class="upload-client-tab client-tab active" data-client="DU" onclick="setUploadClient('DU')">🏢 DU</button>
+                <button class="upload-client-tab client-tab" data-client="Etisalat" onclick="setUploadClient('Etisalat')">🏢 Etisalat</button>
+              </div>
             </div>
-
+            <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#1e40af;">
+              <strong>📌 Instructions:</strong> Download template → Fill ATTENDANCE column with PRESENT or ABSENT → Upload here. System auto-matches by CRM ID for selected client.
+            </div>
             <div class="upload-zone" id="uploadZone">
               <div class="upload-icon">📂</div>
-              <h4>Drop your Excel file here or click to browse</h4>
-              <p>Supports .xlsx, .xls, .csv · Required columns: CRM ID, ATTENDANCE</p>
+              <h4>Drop Excel file here or click to browse</h4>
+              <p>Supports .xlsx, .xls, .csv</p>
               <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" style="display:none;" />
             </div>
-
             <div id="uploadStatus" style="margin-top:16px;"></div>
           </div>
         </div>
-
-        <!-- Manual Attendance -->
-        <div class="section-card">
-          <div class="section-header">
-            <h3>✍️ Quick Manual Mark</h3>
-            <span style="font-size:12px;color:var(--text-muted);">Search and mark individual agents</span>
-          </div>
-          <div class="section-body">
-            <div class="filter-bar" style="margin-bottom:16px;">
-              <input type="text" id="manualSearch" class="search-input" placeholder="Search agent by name or CRM ID..." oninput="filterManual()" />
-            </div>
-            <div id="manualAgentList" style="max-height:350px;overflow-y:auto;">
-              <p style="color:var(--text-muted);font-size:13px;text-align:center;padding:20px;">Start typing to search agents...</p>
-            </div>
-          </div>
-        </div>
       </div>
 
-      <!-- ======= RECORDS PAGE ======= -->
+      <!-- ======= RECORDS ======= -->
       <div class="page" id="page-records">
         <div class="section-card">
-          <div class="section-header">
-            <h3>🗂️ Attendance Records</h3>
-          </div>
+          <div class="section-header"><h3>🗂️ Attendance Records</h3></div>
           <div class="section-body">
             <div class="filter-bar">
               <input type="date" id="recDateFilter" style="padding:9px 14px;border:2px solid var(--border);border-radius:10px;font-family:inherit;font-size:13px;outline:none;" onchange="loadRecords()" />
@@ -251,72 +175,93 @@
                 <option value="">All Teams</option>
               </select>
               <select id="recStatusFilter" style="padding:9px 14px;border:2px solid var(--border);border-radius:10px;font-family:inherit;font-size:13px;outline:none;background:var(--surface2);" onchange="loadRecords()">
-                <option value="">All Status</option>
-                <option value="PRESENT">PRESENT</option>
-                <option value="ABSENT">ABSENT</option>
+                <option value="">All Status</option><option value="PRESENT">PRESENT</option><option value="ABSENT">ABSENT</option>
               </select>
-              <button class="btn btn-outline btn-sm" onclick="loadRecords()">🔍 Filter</button>
             </div>
             <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>CRM ID</th><th>Name</th><th>Team</th><th>Date</th><th>Status</th>
-                  </tr>
-                </thead>
-                <tbody id="recordsTableBody">
-                  <tr><td colspan="5"><div class="empty-state"><div class="empty-icon">🗂️</div><p>Loading...</p></div></td></tr>
-                </tbody>
-              </table>
+              <table><thead><tr><th>CRM ID</th><th>Name</th><th>Team</th><th>Date</th><th>Status</th></tr></thead>
+              <tbody id="recordsTableBody"><tr><td colspan="5"><div class="empty-state"><div class="empty-icon">🗂️</div><p>Loading...</p></div></td></tr></tbody></table>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ======= EXPORT PAGE ======= -->
+      <!-- ======= EXPORT ======= -->
       <div class="page" id="page-export">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex-wrap:wrap;">
-
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
           <div class="section-card">
-            <div class="section-header">
-              <h3>📥 Monthly Report Export</h3>
-            </div>
+            <div class="section-header"><h3>📥 Monthly Report Export</h3></div>
             <div class="section-body">
-              <p style="font-size:13px;color:var(--text-muted);margin-bottom:18px;">Export a full monthly attendance report including agent summary and daily details as Excel file.</p>
+              <div class="form-group">
+                <label>Select Client</label>
+                <select id="exportClientSelect" style="width:100%;padding:12px 16px;border:2px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;outline:none;">
+                  <option value="DU">DU</option>
+                  <option value="Etisalat">Etisalat</option>
+                </select>
+              </div>
               <div class="form-group">
                 <label>Select Month</label>
                 <input type="month" id="exportMonth" style="width:100%;padding:12px 16px;border:2px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;outline:none;" />
               </div>
-              <button class="btn btn-primary" style="width:100%;" onclick="exportMonthly()">
-                📊 Export Monthly Report
-              </button>
+              <button class="btn btn-primary" style="width:100%;" onclick="exportMonthly()">📊 Export Monthly Report</button>
               <div style="margin-top:12px;background:var(--surface2);border-radius:8px;padding:12px 14px;font-size:12px;color:var(--text-muted);">
-                <strong>Includes:</strong><br/>
-                ✔ Summary sheet: agent-wise present/absent count<br/>
-                ✔ Detail sheet: day-by-day attendance<br/>
-                ✔ Terminated agents with termination date
+                ✔ Summary: agent-wise present/absent count<br/>✔ Detail: day-by-day attendance<br/>✔ Terminated agents with date
               </div>
             </div>
           </div>
-
           <div class="section-card">
-            <div class="section-header">
-              <h3>📄 Download Attendance Template</h3>
-            </div>
+            <div class="section-header"><h3>📄 Download Template</h3></div>
             <div class="section-body">
-              <p style="font-size:13px;color:var(--text-muted);margin-bottom:18px;">Download a pre-filled Excel template with all active agents. Just fill in the ATTENDANCE column and upload daily.</p>
+              <p style="font-size:13px;color:var(--text-muted);margin-bottom:18px;">Pre-filled with all active agents. Fill ATTENDANCE column and upload daily.</p>
               <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:14px;margin-bottom:18px;">
-                <div style="font-size:13px;font-weight:600;color:#15803d;margin-bottom:8px;">Template columns:</div>
-                <div style="font-size:12px;color:#166534;line-height:1.8;">
-                  CRM ID · DIALER ID · NAME · DATE OF JOINING · TEAM · ATTENDANCE (PRESENT/ABSENT)
-                </div>
+                <div style="font-size:12px;color:#166534;line-height:1.8;">CRM ID · DIALER ID · NAME · DATE OF JOINING · TEAM · CLIENT · ATTENDANCE</div>
               </div>
-              <button class="btn btn-success" style="width:100%;" onclick="downloadTemplate()">
-                📄 Download Template
-              </button>
+              <button class="btn btn-success" style="width:100%;" onclick="downloadTemplate()">📄 Download Template</button>
             </div>
           </div>
+        </div>
+      </div>
 
+      <!-- ======= USER MANAGEMENT (Admin Only) ======= -->
+      <div class="page" id="page-users">
+        <div class="section-card">
+          <div class="section-header">
+            <h3>👤 User Management</h3>
+            <button class="btn btn-accent btn-sm" onclick="openAddUserModal()">➕ Add New User</button>
+          </div>
+          <div class="section-body">
+            <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:12px 16px;margin-bottom:18px;font-size:13px;color:#92400e;">
+              <strong>⚠️ Admin Only:</strong> Create and manage login accounts for Boss, HR, and Manager. Assign client access (DU / Etisalat / All).
+            </div>
+            <div class="filter-bar">
+              <input type="text" id="userSearch" class="search-input" placeholder="Search by name or user ID..." oninput="filterUsers()" />
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>User ID</th><th>Name</th><th>Role</th><th>Client Access</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="usersTableBody"><tr><td colspan="6"><div class="empty-state"><div class="empty-icon">👤</div><p>Loading users...</p></div></td></tr></tbody>
+              </table>
+            </div>
+            <!-- Role Guide -->
+            <div style="margin-top:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;">
+              <div style="background:var(--surface2);border-radius:10px;padding:14px;border:1px solid var(--border);">
+                <div style="font-weight:700;font-size:12px;color:var(--primary);margin-bottom:6px;">👑 ADMIN</div>
+                <div style="font-size:11px;color:var(--text-muted);line-height:1.7;">Full access · All clients · User management · All features</div>
+              </div>
+              <div style="background:var(--surface2);border-radius:10px;padding:14px;border:1px solid var(--border);">
+                <div style="font-weight:700;font-size:12px;color:var(--primary);margin-bottom:6px;">👔 BOSS</div>
+                <div style="font-size:11px;color:var(--text-muted);line-height:1.7;">Dashboard only · Export only · View assigned client · No upload</div>
+              </div>
+              <div style="background:var(--surface2);border-radius:10px;padding:14px;border:1px solid var(--border);">
+                <div style="font-weight:700;font-size:12px;color:var(--primary);margin-bottom:6px;">📋 HR</div>
+                <div style="font-size:11px;color:var(--text-muted);line-height:1.7;">Upload attendance · View records · Export · Assigned client only</div>
+              </div>
+              <div style="background:var(--surface2);border-radius:10px;padding:14px;border:1px solid var(--border);">
+                <div style="font-weight:700;font-size:12px;color:var(--primary);margin-bottom:6px;">🗂️ MANAGER</div>
+                <div style="font-size:11px;color:var(--text-muted);line-height:1.7;">Add agents · Upload · Records · Export · Assigned client only</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -327,12 +272,16 @@
 <!-- ======= ADD AGENT MODAL ======= -->
 <div class="modal-overlay" id="addAgentModal">
   <div class="modal">
-    <div class="modal-header">
-      <h3>➕ Add New Agent</h3>
-      <button class="modal-close" onclick="closeModal('addAgentModal')">✕</button>
-    </div>
+    <div class="modal-header"><h3>➕ Add New Agent</h3><button class="modal-close" onclick="closeModal('addAgentModal')">✕</button></div>
     <div id="addAgentForm">
       <div class="form-grid">
+        <div class="form-group">
+          <label>Client <span style="color:red">*</span></label>
+          <select id="f_client" style="width:100%;padding:12px 16px;border:2px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;outline:none;">
+            <option value="DU">DU</option>
+            <option value="Etisalat">Etisalat</option>
+          </select>
+        </div>
         <div class="form-group">
           <label>CRM ID <span style="color:red">*</span></label>
           <input type="text" id="f_crm_id" placeholder="e.g. CRM001" />
@@ -363,84 +312,80 @@
   </div>
 </div>
 
-<!-- ======= LOADING OVERLAY ======= -->
+<!-- ======= ADD/EDIT USER MODAL ======= -->
+<div class="modal-overlay" id="addUserModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="userModalTitle">➕ Add New User</h3>
+      <button class="modal-close" onclick="closeModal('addUserModal')">✕</button>
+    </div>
+    <input type="hidden" id="editUserId" value="" />
+    <div id="addUserForm">
+      <div id="u_id_field" class="form-group">
+        <label>User ID <span style="color:red">*</span></label>
+        <input type="text" id="u_userid" placeholder="e.g. boss001, hr_du, manager01" />
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">This is what they type to login. No spaces.</div>
+      </div>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Full Name <span style="color:red">*</span></label>
+          <input type="text" id="u_name" placeholder="e.g. Ahmed Al Rashid" />
+        </div>
+        <div class="form-group full">
+          <label>Password <span style="color:red">*</span></label>
+          <input type="text" id="u_password" placeholder="Create a strong password" />
+        </div>
+        <div class="form-group">
+          <label>Role <span style="color:red">*</span></label>
+          <select id="u_role" style="width:100%;padding:12px 16px;border:2px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;outline:none;">
+            <option value="boss">Boss (View only)</option>
+            <option value="hr">HR (Upload + Export)</option>
+            <option value="manager">Manager (Full except users)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Client Access <span style="color:red">*</span></label>
+          <select id="u_client" style="width:100%;padding:12px 16px;border:2px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;outline:none;">
+            <option value="DU">DU only</option>
+            <option value="Etisalat">Etisalat only</option>
+            <option value="ALL">All Clients</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;margin-top:20px;">
+        <button class="btn btn-primary" style="flex:1;" onclick="saveUser()">✅ Save User</button>
+        <button class="btn btn-outline" onclick="closeModal('addUserModal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======= LOADING ======= -->
 <div class="loading-overlay" id="loadingOverlay" style="display:none;">
-  <div class="spin-big"></div>
-  <p>Processing...</p>
+  <div class="spin-big"></div><p>Processing...</p>
 </div>
 
 <!-- ======= TOAST ======= -->
-<div class="toast" id="toast">
-  <span class="toast-icon">✅</span>
-  <span class="toast-msg">Success</span>
-</div>
+<div class="toast" id="toast"><span class="toast-icon">✅</span><span class="toast-msg">Success</span></div>
 
 <!-- ======= SCRIPTS ======= -->
 <script src="js/config.js"></script>
 <script type="module" src="js/app.js"></script>
-
 <script>
-// Manual search functionality
-async function filterManual() {
-  const q = document.getElementById('manualSearch').value.trim().toLowerCase();
-  const list = document.getElementById('manualAgentList');
-  if (!q) {
-    list.innerHTML = '<p style="color:var(--text-muted);font-size:13px;text-align:center;padding:20px;">Start typing to search agents...</p>';
-    return;
-  }
-  const filtered = (window._allActiveAgents || []).filter(a =>
-    a.name.toLowerCase().includes(q) || a.crm_id.toLowerCase().includes(q)
-  );
-  if (!filtered.length) {
-    list.innerHTML = '<p style="color:var(--text-muted);font-size:13px;text-align:center;padding:20px;">No agents found.</p>';
-    return;
-  }
-  list.innerHTML = filtered.slice(0, 10).map(a => `
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:10px;border:1px solid var(--border);margin-bottom:8px;background:white;">
-      <div>
-        <div style="font-weight:600;font-size:13px;">${a.name}</div>
-        <div style="font-size:11px;color:var(--text-muted);">${a.crm_id} · ${a.team}</div>
-      </div>
-      <div style="display:flex;gap:8px;">
-        <button class="btn btn-success btn-xs" onclick="markManual('${a.crm_id}','PRESENT')">✅ Present</button>
-        <button class="btn btn-danger btn-xs" onclick="markManual('${a.crm_id}','ABSENT')">❌ Absent</button>
-      </div>
-    </div>`).join('');
-}
+// Client tab styling
+const clientTabStyle = document.createElement('style');
+clientTabStyle.textContent = `
+  .client-tab-bar { display:flex; gap:6px; background:var(--surface2); padding:4px; border-radius:10px; border:1px solid var(--border); }
+  .client-tab { padding:7px 18px; border-radius:8px; border:none; font-family:inherit; font-size:13px; font-weight:600; cursor:pointer; background:transparent; color:var(--text-muted); transition:all 0.2s; }
+  .client-tab.active { background:var(--primary); color:white; box-shadow:0 2px 8px rgba(26,31,94,0.25); }
+  .client-tab:hover:not(.active) { background:var(--border); color:var(--text); }
+`;
+document.head.appendChild(clientTabStyle);
 
-async function markManual(crmId, status) {
-  const todayDate = new Date().toISOString().split('T')[0];
-  const agent = (window._allActiveAgents || []).find(a => a.crm_id === crmId);
-  if (!agent) return;
-  try {
-    const { error } = await window._supabase.from('attendance').upsert([{
-      crm_id: agent.crm_id,
-      agent_name: agent.name,
-      team: agent.team,
-      attendance_date: todayDate,
-      status
-    }], { onConflict: 'crm_id,attendance_date' });
-    if (error) throw error;
-    showToast(`${agent.name} marked ${status} ✅`);
-  } catch(e) {
-    showToast('Failed to mark attendance.', 'error');
-  }
+function setUploadClient(client) {
+  document.querySelectorAll('.upload-client-tab').forEach(t => t.classList.toggle('active', t.dataset.client === client));
 }
-
-// Patch app.js to expose supabase and agents for manual section
-const origShowApp = window.showApp;
-document.addEventListener('DOMContentLoaded', () => {
-  // Update team suggestions on modal open
-  const origOpen = window.openAddAgentModal;
-  window.openAddAgentModal = function() {
-    origOpen && origOpen();
-    const dl = document.getElementById('teamSuggestions');
-    if (dl && window._allActiveAgents) {
-      const teams = [...new Set(window._allActiveAgents.map(a => a.team))];
-      dl.innerHTML = teams.map(t => `<option value="${t}">`).join('');
-    }
-  };
-});
+window.setUploadClient = setUploadClient;
 </script>
 </body>
 </html>
